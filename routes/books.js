@@ -38,12 +38,15 @@ router.post('/', async(req, res) => {
 
 router.patch('/:id', async (req, res) => {
     try {
-        const book = await Book.findById(req.params.id)
-        book.title = req.body.title
-        book.description = req.body.description
-        book.active = req.body.active
-        const bookObj = await book.save()
-        res.json(bookObj)
+        const updateBook = await Book.updateOne(
+            {_id: req.params.id},
+            {$set: {
+                title: req.body.title,
+                description: req.body.description,
+                active: req.body.active
+            }
+        });
+        res.json(updateBook)
     } catch (err) {
         res.send('Error ' + err)
     }
